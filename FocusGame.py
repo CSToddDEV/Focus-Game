@@ -19,8 +19,8 @@ class FocusGame:
         self._player_two_color = player_two[1]
         self._turn = None
         self._winner = None
-        self._board =[[[], [], [], []], [[], [], [], [], [], []], [[], [], [], [], [], [], [], []], [[], [], [], [], [], [], [], []],
-                      [[], [], [], [], [], [], [], []], [[], [], [], [], [], [], [], []], [[], [], [], [], [], []], [[], [], [], []]]
+        self._board =[[[], [], [], [], [], []], [[], [], [], [], [], []], [[], [], [], [], [], []],
+                      [[], [], [], [], [], []], [[], [], [], [], [], []], [[], [], [], [], [], []]]
         self.initialize_game()
 
     def get_board(self):
@@ -98,15 +98,8 @@ class FocusGame:
         row_counter = 0
 
         for row in board:
-            if row_counter == 0 or row_counter == 7:
-                row_counter =+ 1
-                continue
-            else:
                 space_counter = 0
                 for space in row:
-                    if (space_counter == 0 or space_counter == 7) and row_counter != 1 and row_counter != 6:
-                        space_counter += 1
-                        continue
                     if counter == 2 and color == player_one.get_player_color():
                         color = player_two.get_player_color()
                         counter = 0
@@ -117,7 +110,6 @@ class FocusGame:
                     counter += 1
                     space_counter += 1
                 row_counter += 1
-
         self.set_board(board)
 
     def move_piece(self, player_name, start, destination, num_of_pieces):
@@ -222,9 +214,9 @@ class FocusGame:
         stack = self.get_stack(start)
         if len(stack) > 0 and player.get_player_color() != stack[-1]:
             return False
-        if start[0] < 0 or start[0] > 7 or start[1] < 0 or start[1] > 7:
+        if start[0] < 0 or start[0] > 5 or start[1] < 0 or start[1] > 5:
             return False
-        if destination[0] < 0 or destination[0] > 7 or destination[1] < 0 or destination[1] > 7:
+        if destination[0] < 0 or destination[0] > 5 or destination[1] < 0 or destination[1] > 5:
             return False
         else:
             return True
@@ -364,3 +356,10 @@ class Player:
         """
         self._captured_pieces += 1
 
+game = FocusGame(('PlayerA', 'R'), ('PlayerB','G'))
+game.print_board()
+print(game.move_piece('PlayerA',(0,0), (0,1), 1))  #Returns message "successfully moved"
+print(game.show_pieces((0,1))) #Returns ['R','R']
+print(game.show_captured('PlayerA')) # Returns 0
+print(game.reserved_move('PlayerA', (0,0))) # Returns message "No pieces in reserve"
+print(game.show_reserve('PlayerA')) # Returns 0
